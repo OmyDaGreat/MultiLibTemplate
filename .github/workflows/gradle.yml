@@ -49,6 +49,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@093dfe9d598ec5a42246855d09b49dc76803c005
+      uses: gradle/actions/setup-gradle@v4
       with:
         arguments: ${{ matrix.target }}
