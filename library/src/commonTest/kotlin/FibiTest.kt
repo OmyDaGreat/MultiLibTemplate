@@ -1,5 +1,8 @@
-package io.github.kotlin.fibonacci
+package xyz.malefic.lib.fibonacci
 
+import xyz.malefic.lib.fibonacci.firstElement
+import xyz.malefic.lib.fibonacci.generateFibi
+import xyz.malefic.lib.fibonacci.secondElement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

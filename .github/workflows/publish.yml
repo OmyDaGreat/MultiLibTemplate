@@ -17,7 +17,7 @@ jobs:
       - name: Extract Maven Central credentials from token block
         id: extract-creds
         run: |
-          echo "${{ secrets.MAVEN_CENTRAL_TOKEN_BLOCK }}" > server.xml
+          echo "${{ secrets.SONATYPE_TOKEN_XML }}" > server.xml
           USERNAME=$(xmllint --xpath "string(//username)" server.xml)
           PASSWORD=$(xmllint --xpath "string(//password)" server.xml)
           echo "ORG_GRADLE_PROJECT_mavenCentralUsername=$USERNAME" >> $GITHUB_ENV

@@ -1,4 +1,4 @@
-package io.github.kotlin.fibonacci
+package xyz.malefic.lib.fibonacci
 
 fun generateFibi() =
     sequence {
