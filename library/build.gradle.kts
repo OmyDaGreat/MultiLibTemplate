@@ -37,6 +37,7 @@ kotlin {
     iosSimulatorArm64()
     linuxX64()
 
+    @Suppress("unused")
     sourceSets {
         val commonMain by getting {
             dependencies {
