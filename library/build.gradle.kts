@@ -46,8 +46,14 @@ kotlin {
     linuxX64()
     linuxArm64()
 
-    js()
-    wasmJs()
+    js {
+        browser()
+        nodejs()
+    }
+    wasmJs {
+        browser()
+        nodejs()
+    }
 
     @Suppress("unused")
     sourceSets {
