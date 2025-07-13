@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val user: String by project
@@ -23,8 +24,10 @@ plugins {
 group = g
 version = v
 
+@OptIn(ExperimentalWasmDsl::class)
 kotlin {
     jvm()
+
     androidTarget {
         publishLibraryVariants("release")
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -32,10 +35,19 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
+    macosX64()
+    macosArm64()
+
     linuxX64()
+    linuxArm64()
+
+    js()
+    wasmJs()
 
     @Suppress("unused")
     sourceSets {

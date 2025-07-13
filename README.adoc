@@ -19,16 +19,17 @@ This template supports the following platforms:
 |Platform |Description
 |JVM |Java Virtual Machine applications
 |Android |Android applications and libraries
-|iOS (x64) |iOS Simulator on Intel Macs
-|iOS (ARM64) |iOS devices and Apple Silicon simulators
-|iOS Simulator (ARM64) |iOS Simulator on Apple Silicon Macs
-|Linux (x64) |Linux desktop applications
+|iOS |iOS applications (iPhone, iPad)
+|macOS |macOS desktop applications
+|Linux |Linux desktop applications
+|JS |JavaScript applications
+|WebAssembly |WebAssembly applications
 |===
 
 == Features
 
 === Kotlin Multiplatform
-Full Kotlin Multiplatform setup with support for JVM, Android, iOS, and Linux targets.
+Full Kotlin Multiplatform setup with support for a variety of  targets.
 
 === Publishing to Maven Central
 Pre-configured publishing setup using the vanniktech Maven publish plugin with support for:
@@ -94,7 +95,7 @@ To generate documentation:
 
 [source,bash]
 ----
-./gradlew dokkaHtml
+./gradlew dokkaGenerate
 ----
 
 == Publishing to Maven Central
@@ -166,17 +167,28 @@ To publish manually:
 MultiLibTemplate/
 ├── .github/
 │   └── workflows/
-│       ├── gradle.yml         # CI/CD workflow
-│       └── publish.yml        # Publishing workflow  
+│       ├── gradle.yml         # Testing workflow
+│       ├── deploy-docs.yml    # Dokka workflow
+│       └── publish.yml        # Publishing workflow
 ├── library/                   # Main library module
 │   ├── build.gradle.kts      # Library-specific build configuration
 │   └── src/
 │       ├── commonMain/        # Common multiplatform code
 │       ├── commonTest/        # Common tests
 │       ├── jvmMain/          # JVM-specific code
+│       ├── jvmTest/          # JVM-specific tests
 │       ├── androidMain/      # Android-specific code
+│       ├── androidTest/      # Android-specific tests
 │       ├── iosMain/          # iOS-specific code
-│       └── linuxMain/        # Linux-specific code
+│       ├── iosTest/          # iOS-specific tests
+│       ├── macosMain/        # macOS-specific code
+│       ├── macosTest/        # macOS-specific tests
+│       ├── jsMain/           # JavaScript-specific code
+│       ├── jsTest/           # JavaScript-specific tests
+│       ├── wasmMain/         # WebAssembly-specific code
+│       ├── wasmTest/         # WebAssembly-specific tests
+│       ├── linuxMain/        # Linux-specific code
+│       └── linuxTest/        # Linux-specific tests
 ├── build.gradle.kts          # Root build configuration
 ├── gradle.properties         # Project configuration
 ├── settings.gradle.kts       # Gradle settings
@@ -200,7 +212,7 @@ repo=YourRepositoryName
 g=your.group.id
 artifact=your-artifact-name
 desc=Your library description
-inception=2024
+inception=2025
 
 # Version
 v=1.0.0
@@ -213,12 +225,26 @@ The template includes a simple Fibonacci sequence generator as an example. Repla
 [source,kotlin]
 ----
 // Common code
-expect fun fibonacci(n: Int): Long
+fun generateFibi() =
+    sequence {
+        var a = firstElement
+        yield(a)
+        var b = secondElement
+        yield(b)
+        while (true) {
+            val c = a + b
+            yield(c)
+            a = b
+            b = c
+        }
+    }
+
+expect val firstElement: Int
+expect val secondElement: Int
 
 // Platform-specific implementations
-actual fun fibonacci(n: Int): Long {
-    return if (n <= 1) n.toLong() else fibonacci(n - 1) + fibonacci(n - 2)
-}
+actual val firstElement = 3
+actual val secondElement = 4
 ----
 
 == License
