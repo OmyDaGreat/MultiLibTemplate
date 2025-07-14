@@ -40,18 +40,24 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-    macosX64()
-    macosArm64()
-
-    linuxX64()
-    linuxArm64()
-
     js {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromium()
+                }
+            }
+        }
         nodejs()
     }
     wasmJs {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromium()
+                }
+            }
+        }
         nodejs()
     }
 
@@ -118,5 +124,11 @@ mavenPublishing {
             connection = "scm:git:git://github.com/$user/$repo.git"
             developerConnection = "scm:git:ssh://github.com/$user/$repo.git"
         }
+    }
+}
+
+dokka {
+    pluginsConfiguration.html {
+        footerMessage.set("&copy; 2025 $dev <$mail>")
     }
 }

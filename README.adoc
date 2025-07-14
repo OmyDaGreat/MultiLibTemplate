@@ -17,11 +17,9 @@ This template supports the following platforms:
 [cols="1,2", options="header"]
 |===
 |Platform |Description
-|JVM |Java Virtual Machine applications
+|JVM |Java Virtual Machine applications, including Compose Desktop
 |Android |Android applications and libraries
-|iOS |iOS applications (iPhone, iPad)
-|macOS |macOS desktop applications
-|Linux |Linux desktop applications
+|Native |iOS applications
 |JS |JavaScript applications
 |WebAssembly |WebAssembly applications
 |===
