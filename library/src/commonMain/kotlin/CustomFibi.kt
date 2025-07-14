@@ -9,12 +9,12 @@ package xyz.malefic.lib.fibonacci
 fun generateFibi() =
     sequence {
         var a = firstElement
-        yield(a) // Yield the first element of the sequence
+        yield(a)
         var b = secondElement
-        yield(b) // Yield the second element of the sequence
+        yield(b)
         while (true) {
             val c = a + b
-            yield(c) // Yield the next Fibonacci number
+            yield(c)
             a = b
             b = c
         }
