@@ -44,7 +44,7 @@ kotlin {
         browser {
             testTask {
                 useKarma {
-                    useChromium()
+                    useChromiumHeadless()
                 }
             }
         }
@@ -54,7 +54,7 @@ kotlin {
         browser {
             testTask {
                 useKarma {
-                    useChromium()
+                    useChromiumHeadless()
                 }
             }
         }
