@@ -3,7 +3,7 @@ agp = "8.12.0"
 kotlin = "2.2.0"
 android-minSdk = "24"
 android-compileSdk = "34"
-kotlinter = "5.1.1"
+kotlinter = "5.2.0"
 kermit = "2.0.6"
 dokka = "2.0.0"
 
