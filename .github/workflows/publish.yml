@@ -1,19 +1,81 @@
 name: Publish
+
 on:
-  release:
-    types: [released, prereleased]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump type'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      custom_version:
+        description: 'Custom version (overrides bump)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   publish:
-    name: Release build and publish
-    runs-on: macOS-latest
+    name: Release Build and Publish
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v5
+
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.0.0"
+
+      - name: Make gradlew Executable
+        run: chmod +x gradlew
+
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Bump version in gradle.properties
+        id: bump_version
+        run: |
+          # Bash
+          file="gradle.properties"
+          if [ -n "${{ github.event.inputs.custom_version }}" ]; then
+          new_version="${{ github.event.inputs.custom_version }}"
+          else
+          version_line=$(grep "^v=" "$file" || echo "")
+          version=${version_line#v=}
+          IFS='.' read -r major minor patch <<< "$version"
+          case "${{ github.event.inputs.bump }}" in
+          major)
+          major=$((major+1)); minor=0; patch=0;;
+          minor)
+          minor=$((minor+1)); patch=0;;
+          patch|*)
+          patch=$((patch+1));;
+          esac
+          new_version="$major.$minor.$patch"
+          fi
+          sed -i "s/^v=.*/v=$new_version/" "$file"
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Commit and push version bump
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: "chore(release): Bump version to ${{ steps.bump_version.outputs.new_version }}"
+          file_pattern: gradle.properties
+
       - name: Extract Maven Central credentials from token block
         id: extract-creds
         run: |
@@ -22,9 +84,32 @@ jobs:
           PASSWORD=$(xmllint --xpath "string(//password)" server.xml)
           echo "ORG_GRADLE_PROJECT_mavenCentralUsername=$USERNAME" >> $GITHUB_ENV
           echo "ORG_GRADLE_PROJECT_mavenCentralPassword=$PASSWORD" >> $GITHUB_ENV
+
       - name: Publish to MavenCentral
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Generate changelog since last tag
+        id: changelog
+        run: |
+          last_tag=$(git describe --tags --abbrev=0 || echo "")
+          if [ -z "$last_tag" ]; then
+            changelog=$(git log --pretty=format:"* %s" )
+          else
+            changelog=$(git log "$last_tag"..HEAD --pretty=format:"* %s")
+          fi
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$changelog" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.bump_version.outputs.new_version }}
+          name: v${{ steps.bump_version.outputs.new_version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
