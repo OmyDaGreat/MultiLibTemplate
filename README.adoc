@@ -20,8 +20,7 @@ This template supports the following platforms:
 |JVM |Java Virtual Machine applications, including Compose Desktop
 |Android |Android applications and libraries
 |Native |iOS applications
-|JS |JavaScript applications
-|WebAssembly |WebAssembly applications
+|Web |JavaScript & WebAssembly applications
 |===
 
 == Features
