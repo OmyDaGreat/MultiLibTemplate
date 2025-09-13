@@ -61,6 +61,8 @@ kotlin {
         nodejs()
     }
 
+    applyDefaultHierarchyTemplate()
+
     @Suppress("unused")
     sourceSets {
         val commonMain by getting {
