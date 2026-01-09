@@ -55,23 +55,6 @@ kotlin {
     iosSimulatorArm64()
 
     js {
-        browser {
-            testTask {
-                useKarma {
-                    useChromiumHeadless()
-                }
-            }
-        }
-        nodejs()
-    }
-    wasmJs {
-        browser {
-            testTask {
-                useKarma {
-                    useChromiumHeadless()
-                }
-            }
-        }
         nodejs()
     }
 
