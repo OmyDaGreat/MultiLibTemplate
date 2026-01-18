@@ -14,6 +14,6 @@ kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 [plugins]
 androidLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.35.0" }
+vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
