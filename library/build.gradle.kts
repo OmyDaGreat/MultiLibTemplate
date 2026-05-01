@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
 
@@ -15,7 +14,7 @@ val inception: String by project
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidKmpLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlinter)
@@ -28,7 +27,7 @@ version = v
 kotlin {
     jvm()
 
-    androidLibrary {
+    android {
         namespace = "$g.$artifact"
         compileSdk =
             libs.versions.android.compileSdk
@@ -40,10 +39,8 @@ kotlin {
                 .toInt()
 
         withJava()
-        withHostTestBuilder {}.configure {}
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }
+        withHostTest {}
+        withDeviceTest {}
 
         compilerOptions {
             jvmTarget.set(JVM_11)
