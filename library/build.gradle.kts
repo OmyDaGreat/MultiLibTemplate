@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
 
 val user: String by project
@@ -23,7 +22,6 @@ plugins {
 group = g
 version = v
 
-@OptIn(ExperimentalWasmDsl::class)
 kotlin {
     jvm()
 

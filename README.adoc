@@ -18,9 +18,9 @@ This template supports the following platforms:
 |===
 |Platform |Description
 |JVM |Java Virtual Machine applications, including Compose Desktop
-|Android |Android applications and libraries
-|Native |iOS applications
-|Web |JavaScript & WebAssembly applications
+|Android |Android library target (KMP Android library plugin)
+|Native |iOS (x64, arm64, simulator arm64)
+|Web |JavaScript applications and site utilities
 |===
 
 == Features
@@ -57,8 +57,8 @@ Centralized configuration using gradle.properties for easy customization:
 
 === Prerequisites
 
-* JDK 11 or higher
-* Gradle 8.0 or higher
+* JDK 17 or higher
+* Gradle 9.1 or higher
 * Xcode (for iOS development, macOS only)
 
 === Setup
@@ -85,7 +85,14 @@ To run tests on all platforms:
 
 [source,bash]
 ----
-./gradlew allTests
+./gradlew :library:allTests
+----
+
+To run JavaScript tests in Node.js only:
+
+[source,bash]
+----
+./gradlew :library:jsNodeTest
 ----
 
 To generate documentation:
@@ -146,8 +153,8 @@ gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_KEY_ID
 
 The template includes a GitHub Actions workflow that automatically publishes releases:
 
-1. Create a new release on GitHub
-2. The workflow will automatically build and publish to Maven Central
+1. Trigger the `Publish` workflow from GitHub Actions
+2. The workflow will build and publish to Maven Central
 3. Artifacts will be available after Sonatype review (usually 15-30 minutes)
 
 To publish manually:
@@ -175,17 +182,11 @@ MultiLibTemplate/
 │       ├── jvmMain/          # JVM-specific code
 │       ├── jvmTest/          # JVM-specific tests
 │       ├── androidMain/      # Android-specific code
-│       ├── androidTest/      # Android-specific tests
-│       ├── iosMain/          # iOS-specific code
-│       ├── iosTest/          # iOS-specific tests
-│       ├── macosMain/        # macOS-specific code
-│       ├── macosTest/        # macOS-specific tests
-│       ├── jsMain/           # JavaScript-specific code
-│       ├── jsTest/           # JavaScript-specific tests
-│       ├── wasmMain/         # WebAssembly-specific code
-│       ├── wasmTest/         # WebAssembly-specific tests
-│       ├── linuxMain/        # Linux-specific code
-│       └── linuxTest/        # Linux-specific tests
+│       ├── androidHostTest/  # Android host/unit tests
+│       ├── nativeMain/       # Native (iOS) shared code
+│       ├── nativeTest/       # Native (iOS) tests
+│       ├── webMain/          # JavaScript-specific code
+│       └── webTest/          # JavaScript-specific tests
 ├── build.gradle.kts          # Root build configuration
 ├── gradle.properties         # Project configuration
 ├── settings.gradle.kts       # Gradle settings
