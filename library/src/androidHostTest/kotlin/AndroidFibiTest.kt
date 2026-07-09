@@ -1,6 +1,5 @@
 package xyz.malefic.lib.fibonacci
 
-import xyz.malefic.lib.fibonacci.generateFibi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

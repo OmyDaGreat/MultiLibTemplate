@@ -39,8 +39,6 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: "9.0.0"
 
       - name: Make gradlew Executable
         run: chmod +x gradlew
@@ -71,12 +69,6 @@ jobs:
           sed -i '' "s/^v=.*/v=$new_version/" "$file"
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
-      - name: Commit and push version bump
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "chore(release): Bump version to ${{ steps.bump_version.outputs.new_version }}"
-          file_pattern: gradle.properties
-
       - name: Extract Maven Central credentials from token block
         id: extract-creds
         run: |
@@ -92,6 +84,12 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Commit and push version bump
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore(release): bump version to ${{ steps.bump_version.outputs.new_version }}"
+          file_pattern: gradle.properties
 
       - name: Generate changelog since last tag
         id: changelog

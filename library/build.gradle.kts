@@ -1,20 +1,20 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 
-val user: String by project
-val dev: String by project
-val mail: String by project
-val devURL: String by project
-val repo: String by project
-val g: String by project
-val artifact: String by project
-val v: String by project
-val desc: String by project
-val inception: String by project
+val user = project.property("user") as String
+val dev = project.property("dev") as String
+val mail = project.property("mail") as String
+val devURL = project.property("devURL") as String
+val repo = project.property("repo") as String
+val g = project.property("g") as String
+val artifact = project.property("artifact") as String
+val v = project.property("v") as String
+val desc = project.property("desc") as String
+val inception = project.property("inception") as String
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKmpLibrary)
-    alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kmp.library)
+    alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlinter)
 }
@@ -41,7 +41,7 @@ kotlin {
         withDeviceTest {}
 
         compilerOptions {
-            jvmTarget.set(JVM_11)
+            jvmTarget.set(JVM_21)
         }
     }
 
@@ -57,15 +57,12 @@ kotlin {
 
     @Suppress("unused")
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.kermit)
-            }
+        commonMain.dependencies {
+            implementation(libs.kermit)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }
@@ -105,6 +102,6 @@ mavenPublishing {
 
 dokka {
     pluginsConfiguration.html {
-        footerMessage.set("&copy; 2025 $dev <$mail>")
+        footerMessage.set("&copy; 2026 $dev <$mail>")
     }
 }
